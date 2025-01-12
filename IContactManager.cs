@@ -1,20 +1,16 @@
 namespace ContactList;
 
 public interface IContactManager
-{
+{    
     void AddContact(string name, string phoneNumber, string? email);
 
-    Contact SearchContactById(int id);
+    void SearchContactById(int id);
 
-    Contact SearchContactByName(string name);
+    void SearchContactByPhoneNumber(string phoneNumber);
 
-    Contact SearchContactByPhoneNumber(string phoneNumber);
+    void ListAllContacts();
 
-    void GetContact();
-
-    void GetContacts();
-
-    void UpdateContact(int id, string name, string phoneNumber, string? alternatePhone, string? workPhone, string? email, ContactType? contactType);
+    void UpdateContact(int id, string name, string mobileNumber, string? email, string? alternatePhone, string? workPhone, ContactType? contactType);
 
     void DeleteContact(int id);
 }

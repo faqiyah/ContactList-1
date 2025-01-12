@@ -36,15 +36,25 @@ public class ContactManager : IContactManager
 
     public void DeleteContact(int id)
     {
-        throw new NotImplementedException();
+        var contact = Contacts.Find(x => x.Id == id);
+
+        if (contact is null)
+        {
+            Console.WriteLine("Contact you are trying to delete does not exist!");
+            return;
+        }
+
+        bool isRemoved = Contacts.Remove(contact);
+
+        string result = isRemoved 
+            ? "Contact removed successfully!" 
+            : "Unable to remove contact!";
+
+        Console.WriteLine(result);
+        Console.WriteLine();
     }
 
-    public void GetContact()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void GetContacts()
+    public void ListAllContacts()
     {
         if (Contacts.Count == 0)
         {
@@ -62,28 +72,81 @@ public class ContactManager : IContactManager
         Console.WriteLine();
     }
 
-    public Contact SearchContactById(int id)
+    public void SearchContactById(int id) 
     {
-        throw new NotImplementedException();
+        var contact = Contacts.Find(x => x.Id == id);
+
+        if (contact is null)
+        {
+            Console.WriteLine("Contact does not exist!");
+            return;
+        }
+
+        var result = $"""
+        =====CONTACT DETAILS=====
+        Name: {contact.Name}
+        Mobile Number: {contact.MobileNumber}
+        Email: {contact.Email ?? "N/A"}
+        Alternate Mobile: {contact.AlternateMobileNumber ?? "N/A"}
+        Work Number: {contact.WorkNumber ?? "N/A"}
+        Contact Type: {contact.ContactType}
+        """;
+
+        Console.WriteLine(result);
+        Console.WriteLine();
     }
 
-    public Contact SearchContactByName(string name)
+    public void SearchContactByPhoneNumber(string mobileNumber)
     {
-        throw new NotImplementedException();
+        var contact = Contacts.Find(x => x.MobileNumber == mobileNumber);
+
+        if (contact is null)
+        {
+            Console.WriteLine("Contact does not exist!");
+            return;
+        }
+
+        var result = $"""
+        =====CONTACT DETAILS=====
+        Name: {contact.Name}
+        Mobile Number: {contact.MobileNumber}
+        Email: {contact.Email ?? "N/A"}
+        Alternate Mobile: {contact.AlternateMobileNumber ?? "N/A"}
+        Work Number: {contact.WorkNumber ?? "N/A"}
+        Contact Type: {contact.ContactType}
+        """;
+
+        Console.WriteLine(result);
     }
 
-    public Contact SearchContactByPhoneNumber(string phoneNumber)
+    public void UpdateContact(int id, string name, string mobileNumber, string? email, string? alternatePhone, string? workPhone, ContactType? contactType)
     {
-        throw new NotImplementedException();
-    }
+        var contact = Contacts.Find(x => x.Id == id);
 
-    public void UpdateContact(int id, string name, string phoneNumber, string? alternatePhone, string? workPhone, string? email, ContactType? contactType)
-    {
-        throw new NotImplementedException();
+        if (contact is null)
+        {
+            Console.WriteLine("Contact you are trying to edit does not exist!");
+            return;
+        }
+
+        contact.Name = name;
+        contact.MobileNumber = mobileNumber;
+        contact.Email = email ?? null;
+        contact.AlternateMobileNumber = alternatePhone ?? null;
+        contact.WorkNumber = workPhone ?? null;
+        contact.ContactType = contactType ?? null;
+
+        Console.WriteLine("Contact was updated successfully!");
+        Console.WriteLine();
     }
 
     private bool IsContactExist(string phoneNumber)
     {
         return Contacts.Any(c => c.MobileNumber == phoneNumber);
+    }
+
+    private bool IsContactExist(int id)
+    {
+        return Contacts.Any(c => c.Id == id);
     }
 }
