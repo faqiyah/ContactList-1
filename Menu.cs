@@ -25,18 +25,52 @@ public class Menu
                 switch (option)
                 {
                     case 0:
-                        exit = true;
-                        break;
-
+                    exit = true;
+                    break;
                     case 1:
                         Console.Write("Enter contact name: ");
                         string name = Console.ReadLine()!;
+                        
+                        char[] check = name.ToCharArray();
+                          char[] specialChar = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '-', '{', '}', '[', ']', '|', ':', ';', '"', '\'', '<', '>', ',', '.', '?', '/', '`', '~' };
+                        for (int i = 0; i < name.Length; i++)
+                        {
+                            if (specialChar.Contains(name[i]))
+                            {
+                                Console.WriteLine("Invalid name. Name must not contain special characters: ");
+                                name = Console.ReadLine()!;
+                            }
+                        }
+
+                        while (!(name.Length <= 3))
+                        {
+                            Console.Write("Invalid name. Name must be more than 3 characters: ");
+                            name = Console.ReadLine()!;
+                        }
+                        
                         Console.Write("Enter phone number: ");
                         string phoneNumber = Console.ReadLine()!;
+                        char[] checkphone = phoneNumber.ToCharArray();
+                        specialChar = new char[]{ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '-', '{', '}', '[', ']', '|', ':', ';', '"', '\'', '<', '>', ',', '.', '?', '/', '`', '~' };
+                        for (int i = 0; i < phoneNumber.Length; i++)
+                        {
+                            if (specialChar.Contains(phoneNumber[i]))
+                            {
+                                Console.WriteLine("Invalid phone number. Phone number must not contain special characters: ");
+                                phoneNumber = Console.ReadLine()!;
+                            }
+                        }
+
+                        while (!(phoneNumber.Length == 11))
+                        {
+                            Console.Write("Invalid Phone number. Phone number should be 11 digits: ");
+                            phoneNumber = Console.ReadLine()!;
+                        }
                         Console.Write("Enter email: ");
                         string? email = Console.ReadLine();
                         _contactManager.AddContact(name, phoneNumber, email);
                         break;
+
 
                     case 2:
                         Console.Write("Enter the ID of contact: ");
@@ -55,11 +89,46 @@ public class Menu
                         int updateId = int.Parse(Console.ReadLine()!);
                         Console.Write("Enter contact name: ");
                         string updatedName = Console.ReadLine()!;
+                        while(updatedName.Length <= 3)
+                        {
+                            Console.Write("Invalid name. name must be more than 3 characters: ");
+                            updatedName = Console.ReadLine()!;
+                        }
+                        specialChar = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '-', '{', '}', '[', ']', '|', ':', ';', '"', '\'', '<', '>', ',', '.', '?', '/', '`', '~' };
+                        for (int i = 0; i < updatedName.Length; i++)
+                        {
+                            if (specialChar.Contains(updatedName[i]))
+                            {
+                                Console.Write("Invalid phone number. name must not contain special characters: ");
+                                updatedName = Console.ReadLine()!;
+                            }
+                        }
+            
                         Console.Write("Enter phone number: ");
                         string updatedPhoneNumber = Console.ReadLine()!;
+                        checkphone = updatedPhoneNumber.ToCharArray();
+                        specialChar = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '-', '{', '}', '[', ']', '|', ':', ';', '"', '\'', '<', '>', ',', '.', '?', '/', '`', '~' };
+                        for (int i = 0; i < updatedPhoneNumber.Length; i++)
+                        {
+                            if (specialChar.Contains(updatedPhoneNumber[i]))
+                            {
+                                Console.Write("Invalid phone number. Phone number must not contain special characters: ");
+                                updatedPhoneNumber = Console.ReadLine()!;
+                            }
+                        }
+
+                        while (!(updatedPhoneNumber.Length == 11))
+                        {
+                            Console.Write("Invalid Phone number. Phone number should be 11 digits: ");
+                            updatedPhoneNumber = Console.ReadLine()!;
+                        }
+
                         Console.Write("Enter email: ");
                         string? updatedEmail = Console.ReadLine();
-                        _contactManager.UpdateContact(updateId, updatedName, updatedPhoneNumber, updatedEmail, null, null, null);
+                        Console.Write("Enter the ContactType you want: ");
+                        string EnterType = Console.ReadLine()!;
+                         ContactType UserContactType = (ContactType)Enum.Parse(typeof(ContactType), EnterType);
+                        _contactManager.UpdateContact(updateId, updatedName, updatedPhoneNumber, updatedEmail, null, null, UserContactType);
                         break;
 
                     case 5:
@@ -78,6 +147,11 @@ public class Menu
                 }
             }
         }
+    }
+
+    private void ToCharArray()
+    {
+        throw new NotImplementedException();
     }
 
     private static void PrintContactMenu()
